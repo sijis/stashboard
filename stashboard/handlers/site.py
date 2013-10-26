@@ -302,17 +302,26 @@ class ServiceHandler(BaseHandler):
             return
 
         try:
+
+            if year:
+                year = int(year)
+            if month:
+                month = int(month)
             if day:
-                start_date = date(int(year), int(month), int(day))
-                end_date = start_date + timedelta(days=1)
+                day = int(day)
+
+            if day:
+                start_date = datetime.date(year, month, day)
+                end_date = start_date + datetime.timedelta(days=1)
             elif month:
-                start_date = date(int(year), int(month), 1)
+                start_date = datetime.date(year, month, 1)
                 days = calendar.monthrange(start_date.year,
                                            start_date.month)[1]
-                end_date = start_date + timedelta(days=days)
+                end_date = start_date + datetime.timedelta(days=days)
             elif year:
-                start_date = date(int(year), 1, 1)
-                end_date = start_date + timedelta(days=365)
+                leap = 366 if calendar.isleap(year) else 365
+                start_date = datetime.date(year, 1, 1)
+                end_date = start_date + datetime.timedelta(days=leap)
             else:
                 start_date = None
                 end_date = None
